@@ -3,7 +3,8 @@
 //
 
 #include <stdlib.h>
-#include <printf.h>
+#include <stdio.h>
+
 #include "../Interface/Foret.h"
 
 Foret* creerForet(int longueur, int largeur) {
@@ -110,7 +111,7 @@ void afficherForet(const Foret* foret) {
                     symbole = '*';
                     break;
                 case FEUILLE:
-                    symbole = '2';
+                    symbole = ' ';
                     break;
                 case ROCHE:
                     symbole = '#';
