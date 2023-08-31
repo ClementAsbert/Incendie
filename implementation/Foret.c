@@ -101,37 +101,8 @@ void initialiserForet(Foret* foret) {
 void afficherForet(const Foret* foret) {
     for (int i = 0; i < foret->longueur; i++) {
         for (int j = 0; j < foret->largeur; j++) {
-            char symbole;
-
-            switch (foret->matrice[i][j].type) {
-                case SOL:
-                    symbole = '+';
-                    break;
-                case ARBRE:
-                    symbole = '*';
-                    break;
-                case FEUILLE:
-                    symbole = ' ';
-                    break;
-                case ROCHE:
-                    symbole = '#';
-                    break;
-                case HERBE:
-                    symbole = 'x';
-                    break;
-                case EAU:
-                    symbole = '/';
-                    break;
-                case CENDRES:
-                    symbole = '-';
-                    break;
-                case CENDRES_ETEINTES:
-                    symbole = '@';
-                    break;
-                default:
-                    symbole = '?';
-            }
-
+            int type = foret->matrice[i][j].type;
+            char symbole = proprietesTypes[type].symbole;
             printf("%c ", symbole);
         }
         printf("\n");

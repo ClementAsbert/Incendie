@@ -20,18 +20,19 @@ enum TypeCellule {
 typedef struct {
     int etat;
     int degre;
+    char symbole;
 } ProprietesType;
 
 // Table de hachage associant chaque type à ses propriétés
 static ProprietesType proprietesTypes[] = {
-        { 0, 0 },   // SOL
-        { 0, 4 },   // ARBRE
-        { 0, 2 },   // FEUILLE
-        { 0, 5 },   // ROCHE
-        { 0, 3 },   // HERBE
-        { 0, 0 },   // EAU
-        { 0, 1 },   // CENDRES
-        { 0, 0 }    // CENDRES_ETEINTES
+        { 0, 0, '+' },   // SOL
+        { 0, 4, '*'},   // ARBRE
+        { 0, 2, ' ' },   // FEUILLE
+        { 0, 5, '#' },   // ROCHE
+        { 0, 3, 'x' },   // HERBE
+        { 0, 0, '/' },   // EAU
+        { 0, 1, '-' },   // CENDRES
+        { 0, 0, '@' }    // CENDRES_ETEINTES
 };
 
 // Structure de données pour une cellule
