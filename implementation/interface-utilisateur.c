@@ -24,7 +24,8 @@ void menu(){
         printf("3. Générer une forêt manuellement\n");
         printf("4. Detruire la foret generer\n");
         printf("5.Lancer la simulation\n");
-        printf("6. Quitter\n");
+        printf("6.Afficher la forêt\n");
+        printf("7. Quitter\n");
         printf("\n");
         scanf("%d", &choix);
 
@@ -71,13 +72,16 @@ void menu(){
                 //Lancer la simulation
                 break;
             case 6:
+                tailleChoisie ? afficherForet(foret) : printf("Aucune forêt à afficher\n");
+                break;
+            case 7:
                 detruireForet(foret);
                 break;
             default:
                 printf("Option invalide. Réessayez.\n");
                 break;
         }
-    } while (choix != 6);
+    } while (choix != 7);
 }
 
 

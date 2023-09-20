@@ -103,7 +103,9 @@ void afficherForet(const Foret* foret) {
         for (int j = 0; j < foret->largeur; j++) {
             int type = foret->matrice[i][j].type;
             char symbole = proprietesTypes[type].symbole;
+            printf("\033[32m");
             printf("%c ", symbole);
+            printf("\033[0m");
         }
         printf("\n");
     }
