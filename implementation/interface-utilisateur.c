@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../Interface/interface_utilisateur.h"
-#include "../Interface/Foret.h"
 
 /**
  * Fonction qui permet à l'utilisateur d'éxécuter les actions qu'il choisie
@@ -18,6 +17,7 @@ void menu(){
     bool tailleChoisie = false;
 
     do {
+        printf("\n");
         printf("Bienvenue dans la simulation d'incendie\n");
         printf("1.Creer foret de taille n/n\n");
         printf("2. Générer une forêt aléatoire\n");
@@ -25,6 +25,7 @@ void menu(){
         printf("4. Detruire la foret generer\n");
         printf("5.Lancer la simulation\n");
         printf("6. Quitter\n");
+        printf("\n");
         scanf("%d", &choix);
 
         switch (choix) {
@@ -43,28 +44,34 @@ void menu(){
                 }
                 break;
             case 2:
-                if(foret == NULL){
-                    printf("Veuillez construire une forêt");
+                if(!tailleChoisie){
+                    printf("\033[31m"); //mais la couleur du texte suivant en rouge
+                    printf("Veuillez construire une forêt\n");
+                    printf("\033[0m"); // réinitialise la couleur en blanc
                 } else{
                     initialiserForet(foret);
                     afficherForet(foret);
-                    break;
                 }
+                break;
             case 3:
-                if(foret == NULL){
-                    printf("Veuillez construire une forêt");
+                if(!tailleChoisie){
+                    printf("\033[31m"); //mais la couleur du texte suivant en rouge
+                    printf("Veuillez construire une forêt\n");
+                    printf("\033[0m"); // réinitialise la couleur en blanc
                 } else{
                     initialiserForetManuellement(foret);
                     afficherForet(foret);
-                    break;
                 }
+                break;
             case 4:
                 detruireForet(foret);
+                tailleChoisie = false;
                 break;
             case 5:
                 //Lancer la simulation
                 break;
             case 6:
+                detruireForet(foret);
                 break;
             default:
                 printf("Option invalide. Réessayez.\n");
