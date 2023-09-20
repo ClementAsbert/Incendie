@@ -10,6 +10,8 @@
 
 // Fonction pour afficher le menu et gérer les interactions utilisateur
 void menu();
+int saisirEntier();
+void choixTailleForêt(int* longueur, int* largeur);
 
 
 #endif //PROJETC_INTERFACE_UTILISATEUR_H

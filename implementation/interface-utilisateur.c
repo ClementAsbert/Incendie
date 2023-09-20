@@ -7,6 +7,45 @@
 #include "../Interface/interface_utilisateur.h"
 
 /**
+ * Fonction qui permet de verifier que l'utilisateur rentre bien un nombre entier et non pas une lettre ou autre
+ * @return l'entier taper par l'utilisateur
+ */
+int saisirEntier() {
+    int entier;
+    while (1) {
+        if (scanf("%d", &entier) == 1) {
+            while (getchar() != '\n'); // Nettoyer le flux d'entrée
+            return entier;
+        }
+        printf("Veuillez entrer un nombre valide : ");
+        while (getchar() != '\n'); // Nettoyer le flux d'entrée
+    }
+}
+
+/**
+ * fonction qui permet à l'utilisateur de choisir la taille de la forêt
+ * Gère le cas ou l'utilisateur rentre des lettres
+ * @param longueur
+ * @param largeur
+ */
+void choixTailleForêt(int* longueur, int* largeur){
+    bool exit = false;
+    do {
+        printf("Choisir la taille de la forêt (longueur) : ");
+        *longueur = saisirEntier();
+
+        printf("Choisir la taille de la forêt (largeur) : ");
+        *largeur = saisirEntier();
+
+        if (*longueur <= 0 || *largeur <= 0) {
+            printf("La taille doit être supérieure à zéro.\n");
+        } else {
+            exit = true; // Marquer que la taille a été choisie
+        }
+    } while (!exit);
+}
+
+/**
  * Fonction qui permet à l'utilisateur d'éxécuter les actions qu'il choisie
  * Ne ce ferme pas temps que l'utilisteur ne choisie pas de quitter
  */
@@ -25,24 +64,17 @@ void menu(){
         printf("4. Detruire la foret generer\n");
         printf("5.Lancer la simulation\n");
         printf("6.Afficher la forêt\n");
-        printf("7. Quitter\n");
+        printf("7.Changer le type d'une cellule\n");
+        printf("8. Quitter\n");
         printf("\n");
-        scanf("%d", &choix);
+
+        choix = saisirEntier();
 
         switch (choix) {
             case 1:
-                while (!tailleChoisie) {
-                    printf("Choisir la taille de la forêt (longueur) : ");
-                    scanf("%d", &longueur);
-                    printf("Choisir la taille de la forêt (largeur) : ");
-                    scanf("%d", &largeur);
-                    if (longueur <= 0 || largeur <= 0) {
-                        printf("La taille doit être supérieure à zéro.\n");
-                    } else {
-                        foret = creerForet(longueur, largeur);
-                        tailleChoisie = true; // Marquer que la taille a été choisie
-                    }
-                }
+                choixTailleForêt(&longueur,&largeur);
+                tailleChoisie = true;
+                foret = creerForet(longueur,largeur);
                 break;
             case 2:
                 if(!tailleChoisie){
@@ -75,13 +107,16 @@ void menu(){
                 tailleChoisie ? afficherForet(foret) : printf("Aucune forêt à afficher\n");
                 break;
             case 7:
+                changerTypeCellule(foret);
+                break;
+            case 8:
                 detruireForet(foret);
                 break;
             default:
                 printf("Option invalide. Réessayez.\n");
                 break;
         }
-    } while (choix != 7);
+    } while (choix != 8);
 }
 
 
