@@ -40,6 +40,7 @@ typedef struct {
     enum TypeCellule type;
     int etat;
     int degre;
+    char symbole;
 } Cellule;
 
 

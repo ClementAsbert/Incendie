@@ -17,6 +17,7 @@ typedef struct {
 Foret* creerForet(int longueur, int largeur);
 void detruireForet(Foret* foret); //Ne pas oublier de libérer la mémoir
 void initialiserForet(Foret* foret);
+void changerTypeCellule(Foret* foret);//Change le type d'une cellule
 void initialiserForetManuellement(Foret* foret);
 void afficherForet(const Foret* foret);
 
