@@ -8,4 +8,6 @@ add_executable(ProjetC main.c
         Interface/Foret.h
         Interface/interface_utilisateur.h
         Interface/simulation.h
-        implementation/Foret.c)
+        implementation/Foret.c
+        implementation/interface-utilisateur.c
+)

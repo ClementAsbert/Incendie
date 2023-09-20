@@ -9,6 +9,7 @@
 #include "simulation.h"
 
 // Fonction pour afficher le menu et gérer les interactions utilisateur
-void afficherMenu(Foret* foret);
+void menu();
+
 
 #endif //PROJETC_INTERFACE_UTILISATEUR_H
