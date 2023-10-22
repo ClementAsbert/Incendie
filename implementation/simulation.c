@@ -3,7 +3,13 @@
 //
 #include "../Interface/Foret.h"
 #include <stdio.h>
+#include <stdbool.h>
 
+/**
+ * Permet de copier la forêt
+ * @param source forêt à copier
+ * @return Foret*
+ */
 Foret* copierForet(const Foret* source) {
     Foret* copie = creerForet(source->longueur, source->largeur);
 
@@ -16,6 +22,11 @@ Foret* copierForet(const Foret* source) {
     return copie;
 }
 
+/**
+ * Permet de copier la copie de la forêt dans la forêt principal
+ * @param foret d'origine
+ * @param copie de la forêt
+ */
 void copierForetDansForet(Foret* foret, const Foret* copie) {
     for (int i = 0; i < foret->longueur; i++) {
         for (int j = 0; j < foret->largeur; j++) {
@@ -24,47 +35,69 @@ void copierForetDansForet(Foret* foret, const Foret* copie) {
     }
 }
 
-void allumezCelulle(Foret* foret, int x, int y){
-    if(x >= 0 && x < foret->longueur && y >= 0 && y < foret->largeur){
+/**
+ * Permet d'allumer une cellule pour commencer la simulation
+ * @param foret ou on allume la cellule
+ * @param x coordonnée x de la cellule
+ * @param y coordonnée y de la cellule
+ * @return boolean
+ */
+bool allumezCelulle(Foret* foret, int x, int y){
+    if(x >= 0 && x < foret->longueur && y >= 0 && y < foret->largeur && foret->matrice[x][y].type != SOL && foret->matrice[x][y].type != EAU){
         foret->matrice[x][y].etat = 1;
+        return true;
     }
     else{
-        printf("coordonnée invalide \n");
+        printf("coordonnée invalide ou type de celulle impossible à allumer \n");
+        return false;
     }
 }
 
-void simulerPropagationFeu(Foret* foret, int iterations){
+/**
+ * Fonction qui simule la propagation du feu
+ * @param foret ou ce déroule la simulation
+ * @param iterations nombre d'iterations pour la simulation
+ */
+void simulerPropagationFeu(Foret* foret, int iterations) {
     // Créez une copie temporaire de la forêt pour stocker les modifications
-    Foret* copie = copierForet(foret);
+    Foret *copie = copierForet(foret);
 
-    for(int t=0; t<iterations; t++){
+    while (iterations > 0) {
         //On parcour toute la forêt pour trouver la celulle qui est allumer
-        for(int i=0; i<foret->longueur;i++){
-            for(int j=0; j<foret->largeur;j++){
+        for (int i = 0; i < foret->longueur; i++) {
+            for (int j = 0; j < foret->largeur; j++) {
                 //On trouve une cellule en feu
-                if(foret->matrice[i][j].etat = 1){
+                if (foret->matrice[i][j].etat == 1) {
                     //EN fonction du degré de la cellule on fait différentes actions
-                    if(foret->matrice[i][j].degre > 2){
+                    if (foret->matrice[i][j].degre > 2) {
                         copie->matrice[i][j].degre--;
-                    }else if(foret->matrice[i][j].degre = 2){
+                    } else if (foret->matrice[i][j].degre == 2) {
                         copie->matrice[i][j].degre--;
                         copie->matrice[i][j].type = CENDRES;
                         copie->matrice[i][j].symbole = proprietesTypes[CENDRES].symbole;
 
-                    }else if(foret->matrice[i][j].degre = 1){
+                    } else if (foret->matrice[i][j].degre == 1) {
                         copie->matrice[i][j].degre--;
                         copie->matrice[i][j].type = CENDRES_ETEINTES;
                         copie->matrice[i][j].symbole = proprietesTypes[CENDRES_ETEINTES].symbole;
                     }
                 }
-
                 //Pour les types ARBRE,FEUILLE,ROCHE,HERBE on verifie les voisins pour voir si il brule
-                if(foret->matrice[i][j].type == ARBRE || foret->matrice[i][j].type == FEUILLE || foret->matrice[i][j].type == ROCHE || foret->matrice[i][j].type == HERBE){
-                    //on regarde ses voison pour savoir si il brûle
-                    for(int x = i-1; x <= x+1; x++){
-                        for(int y = j-1; y <= j+1;y++){
-                            if(x >= 0 && x < foret->longueur && y >= 0 && y < foret->largeur &&
-                                foret->matrice[i][j].etat == 1){
+                if (foret->matrice[i][j].type == ARBRE || foret->matrice[i][j].type == FEUILLE ||
+                    foret->matrice[i][j].type == ROCHE || foret->matrice[i][j].type == HERBE) {
+                    for (int dx = -1; dx <= 1; dx++) { //On génére les combinaisons pour verification du carrer de 3X3
+                        for (int dy = -1; dy <= 1; dy++) {
+                            int x = i + dx;
+                            int y = j + dy;
+
+                            if (dx == 0 && dy == 0) {
+                                // Ignorer la cellule en cours
+                                continue;
+                            }
+                            //verification avant de mettre à jour la cellule
+                            if (x >= 0 && x < foret->longueur && y >= 0 && y < foret->largeur &&
+                                foret->matrice[x][y].etat == 1 && foret->matrice[x][y].type != ROCHE &&
+                                foret->matrice[x][y].type != SOL && copie->matrice[i][j].degre != 0) {
                                 copie->matrice[i][j].degre--;
                                 copie->matrice[i][j].etat = 1;
                             }
@@ -73,8 +106,12 @@ void simulerPropagationFeu(Foret* foret, int iterations){
                 }
             }
         }
+        printf("affichage forêt iteration %d \n", iterations);
         afficherForet(foret);
+        printf("degree \n");
+        afficherDegreeForet(foret);
         copierForetDansForet(foret, copie);
+        iterations--;
     }
     detruireForet(copie);
 }

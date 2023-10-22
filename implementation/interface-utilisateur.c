@@ -45,6 +45,12 @@ void choixTailleForêt(int* longueur, int* largeur){
     } while (!exit);
 }
 
+void messageErreurConstructionForet(){
+    printf("\033[31m"); //mais la couleur du texte suivant en rouge
+    printf("Veuillez construire une forêt\n");
+    printf("\033[0m"); // réinitialise la couleur en blanc
+}
+
 /**
  * Fonction qui permet à l'utilisateur d'éxécuter les actions qu'il choisie
  * Ne ce ferme pas temps que l'utilisteur ne choisie pas de quitter
@@ -78,9 +84,7 @@ void menu(){
                 break;
             case 2:
                 if(!tailleChoisie){
-                    printf("\033[31m"); //mais la couleur du texte suivant en rouge
-                    printf("Veuillez construire une forêt\n");
-                    printf("\033[0m"); // réinitialise la couleur en blanc
+                    messageErreurConstructionForet();
                 } else{
                     initialiserForet(foret);
                     afficherForet(foret);
@@ -88,9 +92,7 @@ void menu(){
                 break;
             case 3:
                 if(!tailleChoisie){
-                    printf("\033[31m"); //mais la couleur du texte suivant en rouge
-                    printf("Veuillez construire une forêt\n");
-                    printf("\033[0m"); // réinitialise la couleur en blanc
+                    messageErreurConstructionForet();
                 } else{
                     initialiserForetManuellement(foret);
                     afficherForet(foret);
@@ -98,23 +100,32 @@ void menu(){
                 break;
             case 4:
                 tailleChoisie ? detruireForet(foret)
-                :   printf("\033[31m"); //mais la couleur du texte suivant en rouge
-                    printf("Veuillez construire une forêt\n");
-                    printf("\033[0m");
-
+                : messageErreurConstructionForet();
                 tailleChoisie = false;
                 break;
             case 5:
-                //Lancer la simulation
+                if(tailleChoisie){
+                    int x,y,t;
+                    do{
+                        printf("Choisissez la cellule à allumer \n");
+                        printf("choisisez la position x \n");
+                        x = saisirEntier();
+                        printf("choisisez la position y \n");
+                        y = saisirEntier();
+                    } while(!allumezCelulle(foret, x,y));
+                    printf("Choisissez le nombre d'itération \n");
+                    t = saisirEntier();
+                    simulerPropagationFeu(foret,t);
+                }else{
+                    messageErreurConstructionForet();
+                }
                 break;
             case 6:
                 tailleChoisie ? afficherForet(foret) : printf("Aucune forêt à afficher\n");
                 break;
             case 7:
                 tailleChoisie ? changerTypeCellule(foret)
-                :   printf("\033[31m"); //mais la couleur du texte suivant en rouge
-                    printf("Veuillez construire une forêt\n");
-                    printf("\033[0m");
+                : messageErreurConstructionForet();
                 break;
             case 8:
                 foret != NULL ? detruireForet(foret) : NULL;

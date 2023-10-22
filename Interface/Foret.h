@@ -20,5 +20,6 @@ void initialiserForet(Foret* foret);
 void changerTypeCellule(Foret* foret);//Change le type d'une cellule
 void initialiserForetManuellement(Foret* foret);
 void afficherForet(const Foret* foret);
+void afficherDegreeForet(const Foret* foret);
 
 #endif //PROJETC_FORET_H

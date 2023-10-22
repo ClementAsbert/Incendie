@@ -10,6 +10,12 @@
 #include "../Interface/interface_utilisateur.h"
 
 
+/**
+ * permet de creer une forêt de taille nxn
+ * @param longueur de la forêt
+ * @param largeur de la forêt
+ * @return Foret*
+ */
 Foret* creerForet(int longueur, int largeur) {
     Foret* foret = malloc(sizeof(Foret));
     if (foret == NULL) {
@@ -36,6 +42,10 @@ Foret* creerForet(int longueur, int largeur) {
     return foret;
 }
 
+/**
+ * Detruit une forêt
+ * @param foret
+ */
 void detruireForet(Foret* foret) {
     // Libérez la mémoire pour chaque ligne de la matrice
     for (int i = 0; i < foret->longueur; i++) {
@@ -49,11 +59,15 @@ void detruireForet(Foret* foret) {
     free(foret);
 }
 
+/**
+ * Initialise la forêt automatiquement en placer les cellules aléatoirement
+ * @param foret
+ */
 void initialiserForet(Foret* foret) {
     for (int i = 0; i < foret->longueur; i++) {
         for (int j = 0; j < foret->largeur; j++) {
             // Générer un nombre aléatoire entre 0 et 7 pour le type de cellule
-            int randomType = rand() % 8;
+            int randomType = rand() % 6;
 
             switch (randomType) {
                 case 0:
@@ -92,23 +106,15 @@ void initialiserForet(Foret* foret) {
                     foret->matrice[i][j].degre = proprietesTypes[EAU].degre;
                     foret->matrice[i][j].symbole = proprietesTypes[EAU].symbole;
                     break;
-                case 6:
-                    foret->matrice[i][j].type = CENDRES;
-                    foret->matrice[i][j].etat = proprietesTypes[CENDRES].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[CENDRES].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[CENDRES].symbole;
-                    break;
-                case 7:
-                    foret->matrice[i][j].type = CENDRES_ETEINTES;
-                    foret->matrice[i][j].etat = proprietesTypes[CENDRES_ETEINTES].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[CENDRES_ETEINTES].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[CENDRES_ETEINTES].symbole;
-                    break;
             }
         }
     }
 }
 
+/**
+ * Affiche la forêt sour forme avec les symboles de chaque cellule
+ * @param foret
+ */
 void afficherForet(const Foret* foret) {
     for (int i = 0; i < foret->longueur; i++) {
         for (int j = 0; j < foret->largeur; j++) {
@@ -122,6 +128,26 @@ void afficherForet(const Foret* foret) {
     }
 }
 
+/**
+ * Affiche la forêt avec degrées de chaque cellules
+ * @param foret
+ */
+void afficherDegreeForet(const Foret* foret) {
+    for (int i = 0; i < foret->longueur; i++) {
+        for (int j = 0; j < foret->largeur; j++) {
+            int degree = foret->matrice[i][j].degre;
+            printf("\033[32m");
+            printf("%d ", degree);
+            printf("\033[0m");
+        }
+        printf("\n");
+    }
+}
+
+/**
+ * Initialise la forêt manuellement, on place manuellement le type de chaque cellule
+ * @param foret
+ */
 void initialiserForetManuellement(Foret* foret) {
     for (int i = 0; i < foret->longueur; i++) {
         for (int j = 0; j < foret->largeur; j++) {
@@ -129,7 +155,7 @@ void initialiserForetManuellement(Foret* foret) {
             int type = saisirEntier();
 
             // Assurez-vous que le type est valide
-            if (type >= SOL && type <= CENDRES_ETEINTES) {
+            if (type >= SOL && type <= EAU) {
                 foret->matrice[i][j].type = type;
                 foret->matrice[i][j].etat = proprietesTypes[type].etat;
                 foret->matrice[i][j].degre = proprietesTypes[type].degre;
@@ -145,6 +171,10 @@ void initialiserForetManuellement(Foret* foret) {
     }
 }
 
+/**
+ * Permet de changer le type d'une cellule et ses attribus associé dans une forêt
+ * @param foret
+ */
 void changerTypeCellule(Foret* foret){
     int x,y; //coordonnée de la cellule
     int type;
