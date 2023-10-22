@@ -10,4 +10,5 @@ add_executable(ProjetC main.c
         Interface/simulation.h
         implementation/Foret.c
         implementation/interface-utilisateur.c
+        implementation/simulation.c
 )
