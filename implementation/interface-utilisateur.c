@@ -58,14 +58,14 @@ void menu(){
     do {
         printf("\n");
         printf("Bienvenue dans la simulation d'incendie\n");
-        printf("1.Creer foret de taille n/n\n");
-        printf("2. Générer une forêt aléatoire\n");
-        printf("3. Générer une forêt manuellement\n");
-        printf("4. Detruire la foret generer\n");
+        printf("1.Creer foret de taille [n][n]\n");
+        printf("2.Générer une forêt aléatoire\n");
+        printf("3.Générer une forêt manuellement\n");
+        printf("4.Detruire la foret générée\n");
         printf("5.Lancer la simulation\n");
         printf("6.Afficher la forêt\n");
         printf("7.Changer le type d'une cellule\n");
-        printf("8. Quitter\n");
+        printf("8.Quitter\n");
         printf("\n");
 
         choix = saisirEntier();
@@ -97,7 +97,11 @@ void menu(){
                 }
                 break;
             case 4:
-                detruireForet(foret);
+                tailleChoisie ? detruireForet(foret)
+                :   printf("\033[31m"); //mais la couleur du texte suivant en rouge
+                    printf("Veuillez construire une forêt\n");
+                    printf("\033[0m");
+
                 tailleChoisie = false;
                 break;
             case 5:
@@ -107,10 +111,13 @@ void menu(){
                 tailleChoisie ? afficherForet(foret) : printf("Aucune forêt à afficher\n");
                 break;
             case 7:
-                changerTypeCellule(foret);
+                tailleChoisie ? changerTypeCellule(foret)
+                :   printf("\033[31m"); //mais la couleur du texte suivant en rouge
+                    printf("Veuillez construire une forêt\n");
+                    printf("\033[0m");
                 break;
             case 8:
-                detruireForet(foret);
+                foret != NULL ? detruireForet(foret) : NULL;
                 break;
             default:
                 printf("Option invalide. Réessayez.\n");
