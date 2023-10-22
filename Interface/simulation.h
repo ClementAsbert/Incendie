@@ -9,5 +9,6 @@
 
 // Fonction pour simuler la propagation du feu
 void simulerPropagationFeu(Foret* foret, int iterations);
+void allumezCelulle(Foret* foret, int x, int y);
 
 #endif //PROJETC_SIMULATION_H
