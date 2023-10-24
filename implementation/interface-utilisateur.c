@@ -71,7 +71,9 @@ void menu(){
         printf("5.Lancer la simulation\n");
         printf("6.Afficher la forêt\n");
         printf("7.Changer le type d'une cellule\n");
-        printf("8.Quitter\n");
+        printf("8.Sauvegarder la forêt\n");
+        printf("9.Récupérer une forêt depuis un fichier\n");
+        printf("10.Quitter\n");
         printf("\n");
 
         choix = saisirEntier();
@@ -128,13 +130,22 @@ void menu(){
                 : messageErreurConstructionForet();
                 break;
             case 8:
+                saveForet(foret, "../foret.txt");
+            case 9:
+                if(foret != NULL){
+                    printf("une foret existe déja veuillez la suprimer");
+                }else{
+                    foret = readForet("../foret.txt");
+                    tailleChoisie = true;
+                }
+            case 10:
                 foret != NULL ? detruireForet(foret) : NULL;
                 break;
             default:
                 printf("Option invalide. Réessayez.\n");
                 break;
         }
-    } while (choix != 8);
+    } while (choix != 10);
 }
 
 

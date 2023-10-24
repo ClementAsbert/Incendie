@@ -21,5 +21,7 @@ void changerTypeCellule(Foret* foret);//Change le type d'une cellule
 void initialiserForetManuellement(Foret* foret);
 void afficherForet(const Foret* foret);
 void afficherDegreeForet(const Foret* foret);
+void saveForet(const Foret* foret, const char* nomFichier);
+Foret* readForet(const char* nomFichier);
 
 #endif //PROJETC_FORET_H

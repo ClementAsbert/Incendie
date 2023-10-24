@@ -200,3 +200,74 @@ void changerTypeCellule(Foret* foret){
     foret->matrice[x][y].degre = proprietesTypes[type].degre;
     foret->matrice[x][y].symbole = proprietesTypes[type].symbole;
 }
+
+/**
+ * Sauvegarde une foret dans un fichier texte
+ * @param foret à sauvegarder
+ * @param nomfichier ou l'on sauvegarde la foret
+ */
+void saveForet(const Foret* foret, const char* nomFichier){
+    //On ouvre le fichier en mode write
+    FILE* fichier= fopen(nomFichier, "w");
+
+    if(fichier == NULL){
+        printf("impossible d'ouvrir le fichier");
+        return;
+    }
+
+    //On écris les dimmensions de la forêt dans le fichier
+    fprintf(fichier, "%d %d \n",foret->longueur, foret->largeur);
+
+    //On parcours la matrice pour enregistrer les cellules dans le fichier
+    for(int i = 0; i < foret->longueur;i++){
+        for(int j=0; j < foret->largeur;j++){
+            fprintf(fichier, "%c", foret->matrice[i][j].symbole);
+        }
+        //retour à la ligne
+        fprintf(fichier, "\n");
+    }
+    //On ferme le fichier après l'écriture
+    fclose(fichier);
+    printf("Forêt sauvegarder dans le fichier : %s \n", nomFichier);
+}
+
+/**
+ * fonction qui recupère une forêt depuis un fichier
+ * @param nomFichier
+ * @return Foret
+ */
+Foret* readForet(const char* nomFichier){
+    //On ouvre le fichier en mode read
+    FILE* fichier= fopen(nomFichier, "r");
+
+    if(fichier == NULL){
+        printf("impossible d'ouvrir le fichier");
+        return NULL;
+    }
+
+    int longueur, largeur;
+    if (fscanf(fichier, "%d %d", &longueur, &largeur) != 2) {
+        fclose(fichier);
+        printf("erreur lors de la lecture des dimensions");
+        return NULL;
+    }
+
+    Foret* foret = creerForet(longueur, largeur);
+
+    for (int i = 0; i < longueur; i++) {
+        for (int j = 0; j < largeur; j++) {
+            int c;
+            while ((c = fgetc(fichier)) != EOF) {
+                char symbole = (char)c;
+                if (symbole == '\n') {
+                    break;  // Sortir de la boucle interne si c'est un saut de ligne
+                }
+                printf("%c",symbole);
+                foret->matrice[i][j].symbole = symbole;
+            }
+
+        }
+    }
+    fclose(fichier);
+    return foret;
+}
