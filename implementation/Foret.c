@@ -118,8 +118,7 @@ void initialiserForet(Foret* foret) {
 void afficherForet(const Foret* foret) {
     for (int i = 0; i < foret->longueur; i++) {
         for (int j = 0; j < foret->largeur; j++) {
-            int type = foret->matrice[i][j].type;
-            char symbole = proprietesTypes[type].symbole;
+            char symbole = foret->matrice[i][j].symbole;
             printf("\033[32m");
             printf("%c ", symbole);
             printf("\033[0m");
@@ -264,8 +263,8 @@ Foret* readForet(const char* nomFichier){
                 }
                 printf("%c",symbole);
                 foret->matrice[i][j].symbole = symbole;
+                printf("%c\n",foret->matrice[i][j].symbole);
             }
-
         }
     }
     fclose(fichier);

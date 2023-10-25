@@ -132,12 +132,8 @@ void menu(){
             case 8:
                 saveForet(foret, "../foret.txt");
             case 9:
-                if(foret != NULL){
-                    printf("une foret existe déja veuillez la suprimer");
-                }else{
                     foret = readForet("../foret.txt");
                     tailleChoisie = true;
-                }
             case 10:
                 foret != NULL ? detruireForet(foret) : NULL;
                 break;
