@@ -132,7 +132,8 @@ void menu(){
             case 8:
                 saveForet(foret, "../foret.txt");
             case 9:
-                    foret = readForet("../foret.txt");
+
+                    readForet(foret,"../foret.txt");
                     tailleChoisie = true;
             case 10:
                 foret != NULL ? detruireForet(foret) : NULL;

@@ -19,7 +19,7 @@
 Foret* creerForet(int longueur, int largeur) {
     Foret* foret = malloc(sizeof(Foret));
     if (foret == NULL) {
-        // Gérer l'échec de l'allocation mémoire
+        printf("Erreur lors de l'allocation de mémoire");
     }
 
     foret->longueur = longueur;
@@ -28,14 +28,14 @@ Foret* creerForet(int longueur, int largeur) {
     // Allouer un tableau de pointeurs (lignes)
     foret->matrice = malloc(longueur * sizeof(Cellule*));
     if (foret->matrice == NULL) {
-        // Gérer l'échec de l'allocation mémoire
+        printf("Erreur lors de l'allocation de mémoire");
     }
 
     // Allouer un tableau de cellules pour chaque ligne
     for (int i = 0; i < longueur; i++) {
         foret->matrice[i] = malloc(largeur * sizeof(Cellule));
         if (foret->matrice[i] == NULL) {
-            // Gérer l'échec de l'allocation mémoire
+            printf("Erreur lors de l'allocation de mémoire");
         }
     }
 
@@ -222,8 +222,6 @@ void saveForet(const Foret* foret, const char* nomFichier){
         for(int j=0; j < foret->largeur;j++){
             fprintf(fichier, "%c", foret->matrice[i][j].symbole);
         }
-        //retour à la ligne
-        fprintf(fichier, "\n");
     }
     //On ferme le fichier après l'écriture
     fclose(fichier);
@@ -235,39 +233,100 @@ void saveForet(const Foret* foret, const char* nomFichier){
  * @param nomFichier
  * @return Foret
  */
-Foret* readForet(const char* nomFichier){
+void readForet(Foret* foret, const char* nomFichier){
     //On ouvre le fichier en mode read
     FILE* fichier= fopen(nomFichier, "r");
 
     if(fichier == NULL){
         printf("impossible d'ouvrir le fichier");
-        return NULL;
     }
 
     int longueur, largeur;
     if (fscanf(fichier, "%d %d", &longueur, &largeur) != 2) {
         fclose(fichier);
         printf("erreur lors de la lecture des dimensions");
-        return NULL;
     }
 
-    Foret* foret = creerForet(longueur, largeur);
+    //On ignore la premiere ligne vus que ce sont les dimenssions
+    char ligneIgnorer[100];
+    fgets(ligneIgnorer, sizeof(ligneIgnorer), fichier);
+
+    foret = creerForet(longueur, largeur);
 
     for (int i = 0; i < longueur; i++) {
         for (int j = 0; j < largeur; j++) {
-            int c;
-            while ((c = fgetc(fichier)) != EOF) {
-                char symbole = (char)c;
-                // Sortir de la boucle interne si c'est un saut de ligne
-                if (symbole == '\n') {
-                    break;
+            int c = fgetc(fichier);
+            char symbole = (char)c;
+            if (c == EOF || symbole == '\n') {
+                fclose(fichier);
+                detruireForet(foret);
+                printf("Erreur lors de la lecture des symboles");
+            }
+            int type;
+            //printf("%c",symbole);
+                switch (symbole) {
+                    case '+':
+                        type = SOL;
+                        foret->matrice[i][j].type = type;
+                        foret->matrice[i][j].symbole = proprietesTypes[type].symbole;
+                        foret->matrice[i][j].etat = proprietesTypes[type].etat;
+                        foret->matrice[i][j].degre = proprietesTypes[type].degre;
+                        break;
+                    case '*':
+                        type = ARBRE;
+                        foret->matrice[i][j].type = type;
+                        foret->matrice[i][j].symbole = proprietesTypes[type].symbole;
+                        foret->matrice[i][j].etat = proprietesTypes[type].etat;
+                        foret->matrice[i][j].degre = proprietesTypes[type].degre;
+                        break;
+                    case ' ':
+                        type = FEUILLE;
+                        foret->matrice[i][j].type = type;
+                        foret->matrice[i][j].symbole = proprietesTypes[type].symbole;
+                        foret->matrice[i][j].etat = proprietesTypes[type].etat;
+                        foret->matrice[i][j].degre = proprietesTypes[type].degre;
+                        break;
+                    case '#':
+                        type = ROCHE;
+                        foret->matrice[i][j].type = type;
+                        foret->matrice[i][j].symbole = proprietesTypes[type].symbole;
+                        foret->matrice[i][j].etat = proprietesTypes[type].etat;
+                        foret->matrice[i][j].degre = proprietesTypes[type].degre;
+                        break;
+                    case 'x':
+                        type = HERBE;
+                        foret->matrice[i][j].type = type;
+                        foret->matrice[i][j].symbole = proprietesTypes[type].symbole;
+                        foret->matrice[i][j].etat = proprietesTypes[type].etat;
+                        foret->matrice[i][j].degre = proprietesTypes[type].degre;
+                        break;
+                    case '/':
+                        type = EAU;
+                        foret->matrice[i][j].type = type;
+                        foret->matrice[i][j].symbole = proprietesTypes[type].symbole;
+                        foret->matrice[i][j].etat = proprietesTypes[type].etat;
+                        foret->matrice[i][j].degre = proprietesTypes[type].degre;
+                        break;
+                    case '-':
+                        type = CENDRES;
+                        foret->matrice[i][j].type = type;
+                        foret->matrice[i][j].symbole = proprietesTypes[type].symbole;
+                        foret->matrice[i][j].etat = proprietesTypes[type].etat;
+                        foret->matrice[i][j].degre = proprietesTypes[type].degre;
+                        break;
+                    case '@':
+                        type = CENDRES_ETEINTES;
+                        foret->matrice[i][j].type = type;
+                        foret->matrice[i][j].symbole = proprietesTypes[type].symbole;
+                        foret->matrice[i][j].etat = proprietesTypes[type].etat;
+                        foret->matrice[i][j].degre = proprietesTypes[type].degre;
+                        break;
+                    default:
+                        break;
+
                 }
-                printf("%c",symbole);
-                foret->matrice[i][j].symbole = symbole;
-                printf("%c\n",foret->matrice[i][j].symbole);
+            printf("%c \n", foret->matrice[i][j].symbole);
             }
         }
-    }
     fclose(fichier);
-    return foret;
 }
