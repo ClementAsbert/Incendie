@@ -258,8 +258,9 @@ Foret* readForet(const char* nomFichier){
             int c;
             while ((c = fgetc(fichier)) != EOF) {
                 char symbole = (char)c;
+                // Sortir de la boucle interne si c'est un saut de ligne
                 if (symbole == '\n') {
-                    break;  // Sortir de la boucle interne si c'est un saut de ligne
+                    break;
                 }
                 printf("%c",symbole);
                 foret->matrice[i][j].symbole = symbole;

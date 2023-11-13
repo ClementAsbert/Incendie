@@ -80,6 +80,10 @@ void simulerPropagationFeu(Foret* foret, int iterations) {
                         copie->matrice[i][j].degre--;
                         copie->matrice[i][j].type = CENDRES_ETEINTES;
                         copie->matrice[i][j].symbole = proprietesTypes[CENDRES_ETEINTES].symbole;
+                    }else if(foret->matrice[i][j].degre == 0){
+                        copie->matrice[i][j].symbole = proprietesTypes[CENDRES_ETEINTES].symbole;
+                        copie->matrice[i][j].etat = 0;
+                        copie->matrice[i][j].type = CENDRES_ETEINTES;
                     }
                 }
                 //Pour les types ARBRE,FEUILLE,ROCHE,HERBE on verifie les voisins pour voir si il brule
@@ -96,8 +100,10 @@ void simulerPropagationFeu(Foret* foret, int iterations) {
                             }
                             //verification avant de mettre à jour la cellule
                             if (x >= 0 && x < foret->longueur && y >= 0 && y < foret->largeur &&
-                                foret->matrice[x][y].etat == 1 && foret->matrice[x][y].type != ROCHE &&
-                                foret->matrice[x][y].type != SOL && copie->matrice[i][j].degre != 0) {
+                                foret->matrice[x][y].etat == 1 &&
+                                foret->matrice[x][y].type != SOL && foret->matrice[x][y].type != EAU &&
+                                copie->matrice[i][j].degre != 0)
+                            {
                                 copie->matrice[i][j].degre--;
                                 copie->matrice[i][j].etat = 1;
                             }
