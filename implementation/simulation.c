@@ -138,6 +138,16 @@ void simulerPropagationFeu(Foret* foret, int iterations) {
         afficherForet(foret);
         printf("degree \n");
         afficherDegreeForet(foret);
+
+        //On attend que l'utilisateur appuis sur une touche pour continuer
+        printf("Appuiez sur Entrer pour continue ou q pour quitter \n");
+        int g = getchar();
+        if(g == 'q'){
+            printf("Vous quittez la simulation \n");
+            break;
+        }
+
+
         copierForetDansForet(foret, copie);
         iterations--;
     }
