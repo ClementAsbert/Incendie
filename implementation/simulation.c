@@ -2,8 +2,10 @@
 // Created by Clément ASBERT on 21/09/2023.
 //
 #include "../Interface/Foret.h"
+#include "../Interface/simulation.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 /**
  * Permet de copier la forêt
@@ -51,6 +53,21 @@ bool allumezCelulle(Foret* foret, int x, int y){
         printf("coordonnée invalide ou type de celulle impossible à allumer \n");
         return false;
     }
+}
+
+Historique* creationHistorique(int taille){
+    Historique* historique = malloc(sizeof(historique) * taille);
+    if (historique == NULL) {
+        printf("Erreur lors de l'allocation de mémoire");
+    }
+    return historique;
+}
+
+void detruireHistorique(Historique* historique, int taille){
+    for(int i = 0; i < taille; i++){
+        detruireForet(historique[i].foret);
+    }
+    free(historique);
 }
 
 /**
@@ -121,11 +138,26 @@ void conditionVoisin(Foret* foret, Foret* copie, int i, int j){
  * @param foret ou ce déroule la simulation
  * @param iterations nombre d'iterations pour la simulation
  */
-void simulerPropagationFeu(Foret* foret, int iterations) {
+void simulerPropagationFeu(Foret* foret, int iterations, int tailleHistorique) {
     // Créez une copie temporaire de la forêt pour stocker les modifications
     Foret* copie = copierForet(foret);
 
+    Historique* historique= creationHistorique(tailleHistorique);
+    int index = 0;
+
     while (iterations > 0) {
+
+        //On enregistre dans l'historique la forêt en cours
+        if(index + 1 == tailleHistorique){
+            detruireForet(historique[0].foret);
+            for(int i = 0 ; i < tailleHistorique - 1 ; i ++){
+                historique[i] = historique[i + 1];
+            }
+            index--;
+        }
+        historique[index].foret = copierForet(foret);
+        index = (index + 1) % tailleHistorique;
+
         //On parcour toute la forêt pour trouver la celulle qui est allumer
         for (int i = 0; i < foret->longueur; i++) {
             for (int j = 0; j < foret->largeur; j++) {
@@ -140,17 +172,21 @@ void simulerPropagationFeu(Foret* foret, int iterations) {
         afficherDegreeForet(foret);
 
         //On attend que l'utilisateur appuis sur une touche pour continuer
-        printf("Appuiez sur Entrer pour continue ou q pour quitter \n");
+        printf("Appuiez sur Entrer pour continue ou q pour quitter et r pour revenir en arrière dans la simulation \n");
         int g = getchar();
         if(g == 'q'){
             printf("Vous quittez la simulation \n");
             break;
+        }else if (g == 'r'){
+            index = (index - 1 + tailleHistorique) % tailleHistorique;
+            copierForetDansForet(foret, historique[index].foret);
+            iterations++;
+        }else{
+            copierForetDansForet(foret, copie);
+            iterations--;
         }
-
-
-        copierForetDansForet(foret, copie);
-        iterations--;
     }
+    detruireHistorique(historique,tailleHistorique);
     detruireForet(copie);
 }
 

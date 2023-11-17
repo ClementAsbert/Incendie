@@ -117,7 +117,7 @@ void menu(){
                     } while(!allumezCelulle(foret, x,y));
                     printf("Choisissez le nombre d'itération \n");
                     t = saisirEntier();
-                    simulerPropagationFeu(foret,t);
+                    simulerPropagationFeu(foret,t, 5);
                 }else{
                     messageErreurConstructionForet();
                 }
