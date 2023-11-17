@@ -6,8 +6,19 @@
 #define PROJETC_SIMULATION_H
 
 #include "foret.h"
+#include <stdbool.h>
 
-// Fonction pour simuler la propagation du feu
-void simulerPropagationFeu(Foret* foret, int iterations);
+typedef struct{
+    Foret* foret;
+}Historique;
+
+void simulerPropagationFeu(Foret* foret, int iterations, int tailleHistorique);
+void conditionDegre(Foret* foret, Foret* copie, int i, int j);
+void conditionVoisin(Foret* foret, Foret* copie, int i, int j);
+bool allumezCelulle(Foret* foret, int x, int y);
+void copierForetDansForet(Foret* foret, const Foret* copie);
+Foret* copierForet(const Foret* source);
+Historique* creationHistorique(int taille);
+void detruireHistorique(Historique* historique, int taille);
 
 #endif //PROJETC_SIMULATION_H
