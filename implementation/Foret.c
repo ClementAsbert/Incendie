@@ -66,6 +66,18 @@ void detruireForet(Foret* foret) {
 void initialiserForet(Foret* foret) {
     for (int i = 0; i < foret->longueur; i++) {
         for (int j = 0; j < foret->largeur; j++) {
+            int randomType = rand() % 6;
+            foret->matrice[i][j].type = (enum TypeCellule)randomType;
+            foret->matrice[i][j].etat = proprietesTypes[randomType].etat;
+            foret->matrice[i][j].degre = proprietesTypes[randomType].degre;
+            foret->matrice[i][j].symbole = proprietesTypes[randomType].symbole;
+        }
+    }
+}
+
+/*void initialiserForet(Foret* foret) {
+    for (int i = 0; i < foret->longueur; i++) {
+        for (int j = 0; j < foret->largeur; j++) {
             // Générer un nombre aléatoire entre 0 et 7 pour le type de cellule
             int randomType = rand() % 6;
 
@@ -109,7 +121,8 @@ void initialiserForet(Foret* foret) {
             }
         }
     }
-}
+}*/
+
 
 /**
  * Affiche la forêt sour forme avec les symboles de chaque cellule
@@ -119,9 +132,9 @@ void afficherForet(const Foret* foret) {
     for (int i = 0; i < foret->longueur; i++) {
         for (int j = 0; j < foret->largeur; j++) {
             char symbole = foret->matrice[i][j].symbole;
-            printf("\033[32m");
+            //printf("\033[32m");
             printf("%c ", symbole);
-            printf("\033[0m");
+            //printf("\033[0m");
         }
         printf("\n");
     }
@@ -142,6 +155,7 @@ void afficherDegreeForet(const Foret* foret) {
         printf("\n");
     }
 }
+
 
 /**
  * Initialise la forêt manuellement, on place manuellement le type de chaque cellule
