@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include "Interface/ihm.h"
 #include "Interface/interface_utilisateur.h"
 
 
@@ -18,6 +19,7 @@ void start(){
 int main() {
     start();
     srand(time(NULL)); //Permet de générer à chaque éxecution une nouvelle forêt aléatoire
-    menu();
+    ouvertureFenetre(800,600,"toto");
+    //menu();
     return 0;
 }
