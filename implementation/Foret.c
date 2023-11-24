@@ -119,9 +119,9 @@ void afficherForet(const Foret* foret) {
     for (int i = 0; i < foret->longueur; i++) {
         for (int j = 0; j < foret->largeur; j++) {
             char symbole = foret->matrice[i][j].symbole;
-            printf("\033[32m");
+            //printf("\033[32m");
             printf("%c ", symbole);
-            printf("\033[0m");
+            //printf("\033[0m");
         }
         printf("\n");
     }
@@ -135,9 +135,9 @@ void afficherDegreeForet(const Foret* foret) {
     for (int i = 0; i < foret->longueur; i++) {
         for (int j = 0; j < foret->largeur; j++) {
             int degree = foret->matrice[i][j].degre;
-            printf("\033[32m");
+            //printf("\033[32m");
             printf("%d ", degree);
-            printf("\033[0m");
+            //printf("\033[0m");
         }
         printf("\n");
     }
