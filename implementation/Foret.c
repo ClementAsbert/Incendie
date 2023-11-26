@@ -20,6 +20,7 @@ Foret* creerForet(int longueur, int largeur) {
     Foret* foret = malloc(sizeof(Foret));
     if (foret == NULL) {
         printf("Erreur lors de l'allocation de mémoire");
+        return NULL;
     }
 
     foret->longueur = longueur;
@@ -29,6 +30,7 @@ Foret* creerForet(int longueur, int largeur) {
     foret->matrice = malloc(longueur * sizeof(Cellule*));
     if (foret->matrice == NULL) {
         printf("Erreur lors de l'allocation de mémoire");
+        return NULL;
     }
 
     // Allouer un tableau de cellules pour chaque ligne
@@ -36,6 +38,7 @@ Foret* creerForet(int longueur, int largeur) {
         foret->matrice[i] = malloc(largeur * sizeof(Cellule));
         if (foret->matrice[i] == NULL) {
             printf("Erreur lors de l'allocation de mémoire");
+            return NULL;
         }
     }
 

@@ -15,5 +15,4 @@ typedef struct{
     Color color;
     char* text;
 }Button;
-void testMenu();
 void ouvertureFenetre(int tailleX, int tailleY, char* titre);
