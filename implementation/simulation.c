@@ -55,6 +55,16 @@ bool allumezCelulle(Foret* foret, int x, int y){
     }
 }
 
+
+void retourArriere(Foret* foret, Historique* historique) {
+    if(historique->index > 0) {
+        historique->index--;
+        copierForetDansForet(foret, historique[historique->index].foret);
+    }else {
+        printf("Pas d'état précédent disponible.\n");
+    }
+}
+
 Historique* creationHistorique(int taille){
     Historique* historique = malloc(sizeof(Historique) * taille);
     if (historique == NULL) {
@@ -152,7 +162,7 @@ void simulerPropagationFeu(Foret* foret, int iterations) {
 
         //On enregistre dans l'historique la forêt en cours
         historique[index].foret = copierForet(foret);
-
+        historique->index = index;
 
         //On parcour toute la forêt pour trouver la celulle qui est allumer
         for (int i = 0; i < foret->longueur; i++) {
@@ -175,7 +185,10 @@ void simulerPropagationFeu(Foret* foret, int iterations) {
         if(g == 'q'){
             printf("Vous quittez la simulation \n");
             break;
-        }else{
+        }else if (g == 'r') {
+            retourArriere(foret, historique);
+            continue;
+        } else {
             copierForetDansForet(foret, copie);
             index++;
         }
