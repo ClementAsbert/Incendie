@@ -9,10 +9,9 @@
 
 #endif //PROJETC_IHM_H
 
-//Structure pour les boutons
-typedef struct{
-    Rectangle rec;
-    Color color;
-    char* text;
-}Button;
+
+typedef enum GameScreen{MENU,SIZE,FOREST}GameScreen;
+
 void ouvertureFenetre(int tailleX, int tailleY, char* titre);
+int choixTaille(int screenWidth);
+int drawMenu();
