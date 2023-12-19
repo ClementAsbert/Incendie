@@ -112,7 +112,6 @@ void conditionDegre(Foret* foret, Foret* copie, int i, int j){
             copie->matrice[i][j].degre--;
             copie->matrice[i][j].type = CENDRES;
             copie->matrice[i][j].symbole = proprietesTypes[CENDRES].symbole;
-
         } else if (foret->matrice[i][j].degre == 1) {
             copie->matrice[i][j].degre--;
             copie->matrice[i][j].type = CENDRES_ETEINTES;
