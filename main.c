@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include "Interface/ihm.h"
 #include <locale.h>
 #include "Interface/interface_utilisateur.h"
 
@@ -20,6 +21,7 @@ int main() {
     setlocale(LC_ALL, "");
     start();
     srand(time(NULL)); //Permet de générer à chaque éxecution une nouvelle forêt aléatoire
-    menu();
+    ouvertureFenetre(800,600,"toto");
+    //menu();
     return 0;
 }
