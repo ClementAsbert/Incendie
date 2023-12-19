@@ -73,6 +73,18 @@ void detruireHistorique(Historique* historique, int taille){
     free(historique);
 }
 
+void detruireHistoriqueIteration(Historique *historique, int taille, int iteration) {
+    for (int i = iteration + 1; i < taille; i++) {
+        if (historique[i].foret != NULL) {
+        // Supposons que detruireForet libère correctement la mémoire de la forêt
+        detruireForet(historique[i].foret);
+        historique[i].foret = NULL; // Important de mettre le pointeur à NULL après la libération
+        }
+
+    }
+    // Ne pas libérer l'ensemble de l'historique ici si vous comptez l'utiliser après
+}
+
 /**
  * Fonction qui permet de mettre a jour une cellule en fonction de son degré pour l'iteration suivante
  * @param foret fôret principale
@@ -142,45 +154,71 @@ void conditionVoisin(Foret* foret, Foret* copie, int i, int j){
  * @param iterations nombre d'iterations pour la simulation
  */
 void simulerPropagationFeu(Foret* foret, int iterations) {
-    // Créez une copie temporaire de la forêt pour stocker les modifications
     Foret* copie = copierForet(foret);
-
-    Historique* historique= creationHistorique(iterations);
+    Historique* historique = creationHistorique(iterations);
     int index = 0;
+    char choix;
 
     while (index < iterations) {
-
-        //On enregistre dans l'historique la forêt en cours
         historique[index].foret = copierForet(foret);
 
-
-        //On parcour toute la forêt pour trouver la celulle qui est allumer
         for (int i = 0; i < foret->longueur; i++) {
             for (int j = 0; j < foret->largeur; j++) {
-                conditionDegre(foret, copie,i,j);
-                //Pour les types ARBRE,FEUILLE,ROCHE,HERBE on verifie les voisins pour voir si il brule
+                conditionDegre(foret, copie, i, j);
                 conditionVoisin(foret, copie, i, j);
             }
         }
+
         printf("affichage forêt iteration %d \n", index);
         afficherForet(foret);
         printf("degree \n");
         afficherDegreeForet(foret);
-        printf("historique %i\n",index);
+        printf("historique %i\n", index);
         afficherForet(historique[index].foret);
 
-        //On attend que l'utilisateur appuis sur une touche pour continuer
-        printf("Appuiez sur Entrer pour continue ou q pour quitter et r pour revenir en arrière dans la simulation \n");
-        int g = getchar();
-        if(g == 'q'){
-            printf("Vous quittez la simulation \n");
+        printf("Appuyez sur 'c' pour continuer, 'q' pour quitter, 'r' pour revenir en arrière, ou 'm' pour modifier une cellule\n");
+        scanf(" %c", &choix);
+
+        if (choix == 'q') {
+            printf("Vous quittez la simulation.\n");
             break;
-        }else{
+        } else if (choix == 'r') {
+            int iterationChoisie;
+            printf("Entrez le numéro de l'itération à laquelle vous souhaitez revenir (0 à %d): ", index -1);
+            scanf("%d", &iterationChoisie);
+            if (iterationChoisie >= 0 && iterationChoisie <= index) {
+                copierForetDansForet(foret, historique[iterationChoisie].foret);
+                copierForetDansForet(copie, historique[iterationChoisie].foret);
+                detruireHistoriqueIteration(historique, iterations, iterationChoisie);
+                index = iterationChoisie;
+            } else {
+                printf("Numéro d'itération invalide.\n");
+            }
+        } else if (choix == 'm') {
+            changerTypeCellule(foret);
+            copierForetDansForet(copie, foret); // Mise à jour de la copie
+            detruireHistoriqueIteration(historique, iterations, index); // Suppression des itérations futures
+            // Recalcul des itérations à partir de l'itération actuelle
+            for (int i = index; i < iterations; i++) {
+                historique[i].foret = copierForet(foret);
+                for (int i = 0; i < foret->longueur; i++) {
+                    for (int j = 0; j < foret->largeur; j++) {
+                        conditionDegre(foret, copie, i, j);
+                        conditionVoisin(foret, copie, i, j);
+                    }
+                }
+                copierForetDansForet(foret, copie);
+            }
+        } else {
             copierForetDansForet(foret, copie);
             index++;
         }
     }
-    detruireHistorique(historique,iterations);
+
+    detruireHistorique(historique, iterations);
     detruireForet(copie);
 }
+
+
+
 
