@@ -10,6 +10,7 @@
 
 typedef struct{
     Foret* foret;
+    int index;
 }Historique;
 
 void simulerPropagationFeu(Foret* foret, int iterations);

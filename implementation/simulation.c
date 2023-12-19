@@ -55,6 +55,16 @@ bool allumezCelulle(Foret* foret, int x, int y){
     }
 }
 
+
+void retourArriere(Foret* foret, Historique* historique) {
+    if(historique->index > 0) {
+        historique->index--;
+        copierForetDansForet(foret, historique[historique->index].foret);
+    }else {
+        printf("Pas d'état précédent disponible.\n");
+    }
+}
+
 Historique* creationHistorique(int taille){
     Historique* historique = malloc(sizeof(Historique) * taille);
     if (historique == NULL) {
@@ -154,14 +164,18 @@ void conditionVoisin(Foret* foret, Foret* copie, int i, int j){
  * @param iterations nombre d'iterations pour la simulation
  */
 void simulerPropagationFeu(Foret* foret, int iterations) {
+    // Créez une copie temporaire de la forêt pour stocker les modifications
     Foret* copie = copierForet(foret);
     Historique* historique = creationHistorique(iterations);
     int index = 0;
-    char choix;
 
     while (index < iterations) {
-        historique[index].foret = copierForet(foret);
 
+        //On enregistre dans l'historique la forêt en cours
+        historique[index].foret = copierForet(foret);
+        historique->index = index;
+
+        //On parcour toute la forêt pour trouver la celulle qui est allumer
         for (int i = 0; i < foret->longueur; i++) {
             for (int j = 0; j < foret->largeur; j++) {
                 conditionDegre(foret, copie, i, j);
@@ -177,11 +191,11 @@ void simulerPropagationFeu(Foret* foret, int iterations) {
         afficherForet(historique[index].foret);
 
         printf("Appuyez sur entrer pour continuer, 'q' pour quitter, 'r' pour revenir en arrière \n");
-
-        if (choix == 'q') {
+        int g = getchar();
+        if (g == 'q') {
             printf("Vous quittez la simulation.\n");
             break;
-        } else if (choix == 'r') {
+        } else if (g == 'r') {
             int iterationChoisie;
             printf("Entrez le numéro de l'itération à laquelle vous souhaitez revenir (0 à %d): ", index -1);
             scanf("%d", &iterationChoisie);
