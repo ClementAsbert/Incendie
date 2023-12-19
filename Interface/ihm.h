@@ -10,7 +10,7 @@
 #endif //PROJETC_IHM_H
 
 
-typedef enum GameScreen{MENU,SIZE,FOREST}GameScreen;
+typedef enum GameScreen{MENU,SIZE,FOREST,ERRORTAILLE}GameScreen;
 
 void ouvertureFenetre(int tailleX, int tailleY, char* titre);
 int choixTaille(int screenWidth);
