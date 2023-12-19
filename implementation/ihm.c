@@ -18,108 +18,9 @@
 // Tableau de textures pour chaque type de cellule
 Texture2D textures[10];
 
-int choixTaille(int screenWidth){
-
-    char name1[MAX_INPUT_CHARS + 1] = "\0";// NOTE: One extra space required for null terminator char '\0'
-    char name2[MAX_INPUT_CHARS + 1] = "\0";// NOTE: One extra space required for null terminator char '\0'
-    int letterCountBox1 = 0;
-    int letterCountBox2 = 0;
-
-    Rectangle textBox1 = { screenWidth/2.0f - 100, 75, 225, 50 };
-    Rectangle textBox2 = { screenWidth/2.0f - 100, 400, 225, 50 };
-    bool mouseOnText1 = false;
-    bool mouseOnText2 = false;
-        // Update
-        //----------------------------------------------------------------------------------
-        if (CheckCollisionPointRec(GetMousePosition(), textBox1)) {
-            mouseOnText1 = true;
-            mouseOnText2 = false;  // Désactiver l'autre champ de texte
-        } else if (CheckCollisionPointRec(GetMousePosition(), textBox2)) {
-            mouseOnText1 = false;  // Désactiver l'autre champ de texte
-            mouseOnText2 = true;
-        } else {
-            mouseOnText1 = false;
-            mouseOnText2 = false;
-        }
-
-        if ((mouseOnText1)) {
-            // Set the window's cursor to the I-Beam
-            SetMouseCursor(MOUSE_CURSOR_IBEAM);
-            // Get char pressed (unicode character) on the queue
-            int key = GetKeyPressed();
-            // Check if more characters have been pressed on the same frame
-            while (key > 0) {
-                // NOTE: Only allow keys in range [48..57]
-                if ((key >= 48) && (key <= 57) && (letterCountBox1 < MAX_INPUT_CHARS)) {
-                    name1[letterCountBox1] = key;
-                    letterCountBox1++;
-                }
-                key = GetKeyPressed();// Check next character in the queue
-            }
-            if (IsKeyDown(KEY_BACKSPACE)) {
-                letterCountBox1--;
-                if (letterCountBox1 < 0) letterCountBox1 = 0;
-                name1[letterCountBox1] = '\0';
-            }
-        } else if ((mouseOnText2)) {
-            SetMouseCursor(MOUSE_CURSOR_IBEAM);
-            int key = GetKeyPressed();
-            while (key > 0) {
-                if ((key >= 48) && (key <= 57) && (letterCountBox2 < MAX_INPUT_CHARS)) {
-                    name2[letterCountBox2] = key;
-                    letterCountBox2++;
-                }
-                key = GetKeyPressed();
-            }
-            if (IsKeyDown(KEY_BACKSPACE)) {
-                letterCountBox2--;
-                if (letterCountBox2 < 0) letterCountBox2 = 0;
-                name2[letterCountBox2] = '\0';
-            }
-        } else SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-
-        DrawRectangleRec(textBox1, LIGHTGRAY);
-        DrawRectangleRec(textBox2, LIGHTGRAY);
-        DrawRectangleRec((Rectangle) {textBox1.x, textBox1.y}, LIGHTGRAY);
-        DrawRectangleRec((Rectangle) {textBox2.x, textBox2.y}, LIGHTGRAY);
-        if (mouseOnText1)
-            DrawRectangleLines((int) textBox1.x, (int) textBox1.y, (int) textBox1.width, (int) textBox1.height,
-                               RED);
-        else
-            DrawRectangleLines((int) textBox1.x, (int) textBox1.y, (int) textBox1.width, (int) textBox1.height,
-                               DARKGRAY);
-        if (mouseOnText2)
-            DrawRectangleLines((int) textBox2.x, (int) textBox2.y, (int) textBox2.width, (int) textBox2.height,
-                               RED);
-        else
-            DrawRectangleLines((int) textBox2.x, (int) textBox2.y, (int) textBox2.width, (int) textBox2.height,
-                               DARKGRAY);
-
-        DrawText(name1, (int) textBox1.x + 5, (int) textBox1.y + 8, 40, MAROON);
-        DrawText(name2, (int) textBox2.x + 5, (int) textBox2.y + 8, 40, MAROON);
-        DrawText("Entrer la longueur de le forêt", textBox1.x - 25, textBox1.y - 25, 20, RED);
-        DrawText("Entrer la largeur de le forêt", textBox2.x - 25, textBox2.y - 25, 20, RED);
-        DrawText(TextFormat("INPUT CHARS: %i/%i", letterCountBox1, MAX_INPUT_CHARS), textBox1.x + 15,
-                 textBox1.y + 60,
-                 20, DARKGRAY);
-        DrawText(TextFormat("INPUT CHARS: %i/%i", letterCountBox2, MAX_INPUT_CHARS), textBox2.x + 15,
-                 textBox2.y + 60,
-                 20, DARKGRAY);
-
-        if (mouseOnText1) {
-            if (letterCountBox1 < MAX_INPUT_CHARS) {
-                // Draw blinking underscore char
-                DrawText("_", (int) textBox1.x + 8 + MeasureText(name1, 40), (int) textBox1.y + 12, 40, MAROON);
-            } else DrawText("Press BACKSPACE to delete chars...", screenWidth / 2, 300, 20, GRAY);
-
-        } else if (mouseOnText2) {
-            if (letterCountBox2 < MAX_INPUT_CHARS) {
-                // Draw blinking underscore char
-                DrawText("_", (int) textBox2.x + 8 + MeasureText(name2, 40), (int) textBox2.y + 12, 40, MAROON);
-            } else DrawText("Press BACKSPACE to delete chars...", screenWidth / 2, 300, 20, GRAY);
-        }
-}
-
+/**
+ * Charge les texture en fonction pour chaque symbole
+ */
 void chargerTextures() {
     // Chargez les textures pour chaque type de cellule
     textures['*'] = LoadTexture("../Interface/Assets/Sprites/arbre-4.png");
@@ -133,13 +34,19 @@ void chargerTextures() {
     // Ajoutez d'autres textures pour les autres types de cellules
 }
 
+/**
+ * Detruit les textures
+ */
 void detruireTexture(){
     for(int i = 0; i < 10; i++){
         UnloadTexture(textures[i]);
     }
 }
 
-
+/**
+ * Dessine la forêt
+ * @param foret
+ */
 void dessinForet(Foret *foret){
     chargerTextures();
     for (int i = 0; i < foret->longueur; i++) {
@@ -156,6 +63,10 @@ void dessinForet(Foret *foret){
     }
 }
 
+/**
+ * Dessine le menu
+ * @return l'index de l'onglet cliqué
+ */
 int drawMenu(){
     Color textColor = RAYWHITE;
     Color highlightColor = {0,102,204,255};
@@ -213,7 +124,12 @@ int drawMenu(){
 }
 
 
-
+/**
+ * Fonction qui ouvre la fenêtre raylib et gère le stateManagement
+ * @param tailleX taille x de la fenêtre
+ * @param tailleY taille y de la fenêtre
+ * @param titre de la fenêtre
+ */
 void ouvertureFenetre(int tailleX, int tailleY, char* titre){
     SetTraceLogLevel(LOG_ERROR);
     InitWindow(tailleX,tailleY,titre);
@@ -224,6 +140,7 @@ void ouvertureFenetre(int tailleX, int tailleY, char* titre){
     GameScreen currentScreen = MENU;
     SetTargetFPS(30);
     while(!WindowShouldClose()){
+        //Logique du changment de state
         switch (currentScreen) {
             case MENU:
                 switch (drawMenu()) {
@@ -232,13 +149,19 @@ void ouvertureFenetre(int tailleX, int tailleY, char* titre){
                         largeur = 12;
                         foret = creerForet(longueur, largeur);
                         initialiserForet(foret);
+                        tailleChoisie = true;
+                        currentScreen = SIZE;
                         break;
                     case 2:
                         break;
                     case 3:
                         break;
                     case 4:
-                        currentScreen = FOREST;
+                        if(tailleChoisie){
+                            currentScreen = FOREST;
+                        }else{
+                            currentScreen = ERRORTAILLE;
+                        }
                         break;
                     case 5:
                         break;
@@ -247,9 +170,6 @@ void ouvertureFenetre(int tailleX, int tailleY, char* titre){
             case SIZE:
                 if(IsKeyDown(KEY_ENTER)){
                     currentScreen = MENU;
-                    longueur = 16;
-                    largeur = 16;
-                    foret = creerForet(longueur, largeur);
                 }
                 break;
             case FOREST:
@@ -266,8 +186,13 @@ void ouvertureFenetre(int tailleX, int tailleY, char* titre){
                     //simulerPropagationFeu(foret,10,10);
                 }
                 break;
+            case ERRORTAILLE:
+                if(IsKeyDown(KEY_ENTER)){
+                    currentScreen = MENU;
+                }
+                break;
         }
-        //On commence à mettre les élément dans la fenêtre
+        //On Dessine le contenue des fenètres
         ClearBackground(DARKGRAY);
         BeginDrawing();
         switch (currentScreen) {
@@ -275,12 +200,14 @@ void ouvertureFenetre(int tailleX, int tailleY, char* titre){
                 drawMenu();
                 break;
             case SIZE:
-                if(!tailleChoisie){
-                    choixTaille(tailleX);
-                }
+                DrawText("Forêt initialiser en 16 par 12",100,tailleY/2,40,RED);
                 break;
             case FOREST:
                 dessinForet(foret);
+                break;
+            case ERRORTAILLE:
+                DrawText("La forêt n'est pas inistialisé",100,100,40,RED);
+                DrawText("Appuyer sur Entrer",200,300,40,RED);
                 break;
         }
         //Fin du dessin
