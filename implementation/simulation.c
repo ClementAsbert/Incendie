@@ -176,8 +176,7 @@ void simulerPropagationFeu(Foret* foret, int iterations) {
         printf("historique %i\n", index);
         afficherForet(historique[index].foret);
 
-        printf("Appuyez sur 'c' pour continuer, 'q' pour quitter, 'r' pour revenir en arrière, ou 'm' pour modifier une cellule\n");
-        scanf(" %c", &choix);
+        printf("Appuyez sur entrer pour continuer, 'q' pour quitter, 'r' pour revenir en arrière \n");
 
         if (choix == 'q') {
             printf("Vous quittez la simulation.\n");
@@ -193,21 +192,6 @@ void simulerPropagationFeu(Foret* foret, int iterations) {
                 index = iterationChoisie;
             } else {
                 printf("Numéro d'itération invalide.\n");
-            }
-        } else if (choix == 'm') {
-            changerTypeCellule(foret);
-            copierForetDansForet(copie, foret); // Mise à jour de la copie
-            detruireHistoriqueIteration(historique, iterations, index); // Suppression des itérations futures
-            // Recalcul des itérations à partir de l'itération actuelle
-            for (int i = index; i < iterations; i++) {
-                historique[i].foret = copierForet(foret);
-                for (int i = 0; i < foret->longueur; i++) {
-                    for (int j = 0; j < foret->largeur; j++) {
-                        conditionDegre(foret, copie, i, j);
-                        conditionVoisin(foret, copie, i, j);
-                    }
-                }
-                copierForetDansForet(foret, copie);
             }
         } else {
             copierForetDansForet(foret, copie);
