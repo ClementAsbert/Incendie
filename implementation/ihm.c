@@ -11,8 +11,6 @@
 #include "../Interface/simulation.h"
 
 #define MAX_LENGTH_MENU 9
-
-#define MAX_INPUT_CHARS 9
 #define CELLSIZE 50
 
 // Tableau de textures pour chaque type de cellule
@@ -133,15 +131,26 @@ int drawMenu(){
 void ouvertureFenetre(int tailleX, int tailleY, char* titre){
     SetTraceLogLevel(LOG_ERROR);
     InitWindow(tailleX,tailleY,titre);
+    Texture2D backgroud = LoadTexture("../watercolor_forest_fire_resized_800x600.png");
     int longueur, largeur;
     bool tailleChoisie = false;
     bool celluleAllumer = false;
     Foret* foret;
-    GameScreen currentScreen = MENU;
+    GameScreen currentScreen = ACCEUIL;
+    int framesCounter = 0;
     SetTargetFPS(30);
     while(!WindowShouldClose()){
         //Logique du changment de state
         switch (currentScreen) {
+            case ACCEUIL:
+                framesCounter++;    // Count frames
+
+                // Wait for 2 seconds (120 frames) before jumping to TITLE screen
+                if (framesCounter > 120)
+                {
+                    currentScreen = MENU;
+                }
+                break;
             case MENU:
                 switch (drawMenu()) {
                     case 1:
@@ -197,6 +206,9 @@ void ouvertureFenetre(int tailleX, int tailleY, char* titre){
         ClearBackground(DARKGRAY);
         BeginDrawing();
         switch (currentScreen) {
+            case ACCEUIL:
+                DrawTexture(backgroud,0,0,RAYWHITE);
+                break;
             case MENU:
                 drawMenu();
                 break;
@@ -214,6 +226,7 @@ void ouvertureFenetre(int tailleX, int tailleY, char* titre){
         //Fin du dessin
         EndDrawing();
     }
+    UnloadTexture(backgroud);
     //On ferme la fenêtre
     CloseWindow();
 }

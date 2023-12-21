@@ -21,7 +21,7 @@ int main() {
     setlocale(LC_ALL, "");
     start();
     srand(time(NULL)); //Permet de générer à chaque éxecution une nouvelle forêt aléatoire
-    ouvertureFenetre(800,600,"toto");
+    ouvertureFenetre(800,600,"Simulation Incendie");
     //menu();
     return 0;
 }
