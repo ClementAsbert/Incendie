@@ -145,6 +145,7 @@ void ouvertureFenetre(int tailleX, int tailleY, char* titre){
             case MENU:
                 switch (drawMenu()) {
                     case 1:
+                        //Pour le moment j'initialise la forêt automatiquement car je ne gère pas la taille de la fenetre
                         longueur = 16;
                         largeur = 12;
                         foret = creerForet(longueur, largeur);

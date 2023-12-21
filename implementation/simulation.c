@@ -55,7 +55,11 @@ bool allumezCelulle(Foret* foret, int x, int y){
     }
 }
 
-
+/**
+ * permet le retour en arrière pour revenir à un état précedant
+ * @param foret
+ * @param historique
+ */
 void retourArriere(Foret* foret, Historique* historique) {
     if(historique->index > 0) {
         historique->index--;
@@ -65,6 +69,11 @@ void retourArriere(Foret* foret, Historique* historique) {
     }
 }
 
+/**
+ * Creer l'historique pour sauvegarder les iterations
+ * @param taille
+ * @return un Historique
+ */
 Historique* creationHistorique(int taille){
     Historique* historique = malloc(sizeof(Historique) * taille);
     if (historique == NULL) {
@@ -76,6 +85,11 @@ Historique* creationHistorique(int taille){
     return historique;
 }
 
+/**
+ * detruit les fôrets dans l'historique
+ * @param historique
+ * @param taille de l'historique
+ */
 void detruireHistorique(Historique* historique, int taille){
     for(int i = 0; i < taille; i++){
         detruireForet(historique[i].foret);
@@ -92,7 +106,6 @@ void detruireHistoriqueIteration(Historique *historique, int taille, int iterati
         }
 
     }
-    // Ne pas libérer l'ensemble de l'historique ici si vous comptez l'utiliser après
 }
 
 /**
@@ -184,10 +197,12 @@ void simulerPropagationFeu(Foret* foret, int iterations) {
 
         printf("affichage forêt iteration %d \n", index);
         afficherForet(foret);
-        printf("degree \n");
-        afficherDegreeForet(foret);
-        printf("historique %i\n", index);
-        afficherForet(historique[index].foret);
+
+        //A afficher si besoin
+        //printf("degree \n");
+        //afficherDegreeForet(foret);
+        //printf("historique %i\n", index);
+        //afficherForet(historique[index].foret);
 
         printf("Appuyez sur entrer pour continuer, 'q' pour quitter, 'r' pour revenir en arrière \n");
         int g = getchar();

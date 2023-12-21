@@ -71,48 +71,13 @@ void initialiserForet(Foret* foret) {
         for (int j = 0; j < foret->largeur; j++) {
             // Générer un nombre aléatoire entre 0 et 7 pour le type de cellule
             int randomType = rand() % 6;
-
-            switch (randomType) {
-                case 0:
-                    foret->matrice[i][j].type = SOL;
-                    foret->matrice[i][j].etat = proprietesTypes[SOL].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[SOL].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[SOL].symbole;
-                    break;
-                case 1:
-                    foret->matrice[i][j].type = ARBRE;
-                    foret->matrice[i][j].etat = proprietesTypes[ARBRE].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[ARBRE].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[ARBRE].symbole;
-                    break;
-                case 2:
-                    foret->matrice[i][j].type = FEUILLE;
-                    foret->matrice[i][j].etat = proprietesTypes[FEUILLE].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[FEUILLE].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[FEUILLE].symbole;
-                    break;
-                case 3:
-                    foret->matrice[i][j].type = ROCHE;
-                    foret->matrice[i][j].etat = proprietesTypes[ROCHE].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[ROCHE].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[ROCHE].symbole;
-                    break;
-                case 4:
-                    foret->matrice[i][j].type = HERBE;
-                    foret->matrice[i][j].etat = proprietesTypes[HERBE].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[HERBE].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[HERBE].symbole;
-                    break;
-                case 5:
-                    foret->matrice[i][j].type = EAU;
-                    foret->matrice[i][j].etat = proprietesTypes[EAU].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[EAU].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[EAU].symbole;
-                    break;
+            foret->matrice[i][j].type = (enum TypeCellule)randomType;
+            foret->matrice[i][j].etat = proprietesTypes[randomType].etat;
+            foret->matrice[i][j].degre = proprietesTypes[randomType].degre;
+            foret->matrice[i][j].symbole = proprietesTypes[randomType].symbole;
             }
         }
     }
-}
 
 /**
  * Affiche la forêt sour forme avec les symboles de chaque cellule
@@ -232,7 +197,7 @@ void saveForet(const Foret* foret, const char* nomFichier){
 }
 
 /**
- * fonction qui recupère une forêt depuis un fichier
+ * fonction qui recupère une forêt depuis un fichier (non fonctionnel)
  * @param nomFichier
  * @return Foret
  */
