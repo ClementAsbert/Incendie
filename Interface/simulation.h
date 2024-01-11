@@ -12,6 +12,7 @@ typedef struct{
     Foret* foret;
 }Historique;
 
+
 void simulerPropagationFeu(Foret* foret, int iterations, int tailleHistorique);
 void conditionDegre(Foret* foret, Foret* copie, int i, int j);
 void conditionVoisin(Foret* foret, Foret* copie, int i, int j);
@@ -20,5 +21,8 @@ void copierForetDansForet(Foret* foret, const Foret* copie);
 Foret* copierForet(const Foret* source);
 Historique* creationHistorique(int taille);
 void detruireHistorique(Historique* historique, int taille);
+// Déclaration de la fonction pour afficher les états précédents de la forêt
+void afficherEtatsPrecedents(Historique* historique, int taille);
+
 
 #endif //PROJETC_SIMULATION_H

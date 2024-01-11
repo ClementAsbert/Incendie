@@ -144,9 +144,15 @@ void simulerPropagationFeu(Foret* foret, int iterations, int tailleHistorique) {
 
     Historique* historique= creationHistorique(tailleHistorique);
     int index = 0;
+    int copie_iterations = iterations;
+    int tmp = 1;
+
+    printf("affichage forêt iteration %d \n", iterations);
+    afficherForet(foret);
+    printf("degree \n");
+    afficherDegreeForet(foret);
 
     while (iterations > 0) {
-
         //On enregistre dans l'historique la forêt en cours
         if(index + 1 == tailleHistorique){
             detruireForet(historique[0].foret);
@@ -162,31 +168,58 @@ void simulerPropagationFeu(Foret* foret, int iterations, int tailleHistorique) {
         for (int i = 0; i < foret->longueur; i++) {
             for (int j = 0; j < foret->largeur; j++) {
                 conditionDegre(foret, copie,i,j);
-                //Pour les types ARBRE,FEUILLE,ROCHE,HERBE on verifie les voisins pour voir si il brule
+                //Pour les types ARBRE,FEUILLE,ROCHE,HERBE on verifie les voisins pour voir si ils brulent
                 conditionVoisin(foret, copie, i, j);
             }
         }
+        /**
         printf("affichage forêt iteration %d \n", iterations);
         afficherForet(foret);
         printf("degree \n");
         afficherDegreeForet(foret);
-
-        //On attend que l'utilisateur appuis sur une touche pour continuer
-        printf("Appuiez sur Entrer pour continue ou q pour quitter et r pour revenir en arrière dans la simulation \n");
+        */
+        //On attend que l'utilisateur appuie sur une touche pour continuer
+        printf("Appuiez sur C pour continue ou q pour quitter et r pour revenir en arrière dans la simulation \n");
         int g = getchar();
         if(g == 'q'){
             printf("Vous quittez la simulation \n");
             break;
         }else if (g == 'r'){
-            index = (index - 1 + tailleHistorique) % tailleHistorique;
+            /**
+             * index = (index - 1 + tailleHistorique) % tailleHistorique;
             copierForetDansForet(foret, historique[index].foret);
             iterations++;
-        }else{
+             */
+
+
+            int tailleHisto = copie_iterations - iterations +1;
+            afficherEtatsPrecedents(historique,tailleHisto);
+
+            /**
+            int bis = iterations - tmp;
+            afficherForet(historique[bis].foret);
+            tmp++;
+             */
+        }else if (g == 'c' || g == 'C'){
             copierForetDansForet(foret, copie);
             iterations--;
+            printf("affichage forêt iteration %d \n", iterations);
+            afficherForet(foret);
+            printf("degree \n");
+            afficherDegreeForet(foret);
         }
     }
     detruireHistorique(historique,tailleHistorique);
     detruireForet(copie);
 }
-
+/**
+ * Focntion qui affiche les precedents etats de la foret;
+ * @param historique
+ * @param taille
+ */
+void afficherEtatsPrecedents(Historique* historique, int taille){
+    for(int i = 0; i < taille; i++){
+        printf("affichage de l'etat precedent de la foret (index %d):\n",i);
+        afficherForet(historique[i].foret);
+    }
+}

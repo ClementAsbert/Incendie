@@ -75,55 +75,6 @@ void initialiserForet(Foret* foret) {
     }
 }
 
-/*void initialiserForet(Foret* foret) {
-    for (int i = 0; i < foret->longueur; i++) {
-        for (int j = 0; j < foret->largeur; j++) {
-            // Générer un nombre aléatoire entre 0 et 7 pour le type de cellule
-            int randomType = rand() % 6;
-
-            switch (randomType) {
-                case 0:
-                    foret->matrice[i][j].type = SOL;
-                    foret->matrice[i][j].etat = proprietesTypes[SOL].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[SOL].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[SOL].symbole;
-                    break;
-                case 1:
-                    foret->matrice[i][j].type = ARBRE;
-                    foret->matrice[i][j].etat = proprietesTypes[ARBRE].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[ARBRE].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[ARBRE].symbole;
-                    break;
-                case 2:
-                    foret->matrice[i][j].type = FEUILLE;
-                    foret->matrice[i][j].etat = proprietesTypes[FEUILLE].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[FEUILLE].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[FEUILLE].symbole;
-                    break;
-                case 3:
-                    foret->matrice[i][j].type = ROCHE;
-                    foret->matrice[i][j].etat = proprietesTypes[ROCHE].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[ROCHE].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[ROCHE].symbole;
-                    break;
-                case 4:
-                    foret->matrice[i][j].type = HERBE;
-                    foret->matrice[i][j].etat = proprietesTypes[HERBE].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[HERBE].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[HERBE].symbole;
-                    break;
-                case 5:
-                    foret->matrice[i][j].type = EAU;
-                    foret->matrice[i][j].etat = proprietesTypes[EAU].etat;
-                    foret->matrice[i][j].degre = proprietesTypes[EAU].degre;
-                    foret->matrice[i][j].symbole = proprietesTypes[EAU].symbole;
-                    break;
-            }
-        }
-    }
-}*/
-
-
 /**
  * Affiche la forêt sour forme avec les symboles de chaque cellule
  * @param foret
@@ -148,9 +99,9 @@ void afficherDegreeForet(const Foret* foret) {
     for (int i = 0; i < foret->longueur; i++) {
         for (int j = 0; j < foret->largeur; j++) {
             int degree = foret->matrice[i][j].degre;
-            printf("\033[32m");
+            //printf("\033[32m");
             printf("%d ", degree);
-            printf("\033[0m");
+            //printf("\033[0m");
         }
         printf("\n");
     }
